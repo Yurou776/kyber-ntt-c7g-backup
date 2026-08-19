@@ -196,8 +196,10 @@ ntt_kyber_sve2_v128:
     dup     z30.h, w9
 
     // ---- Phase A0 : len=128, single zeta, stream 16 vector-pairs ----
-    adrp    x11, ntt_z128_m ; add x11,x11,:lo12:ntt_z128_m
-    adrp    x12, ntt_z128_q ; add x12,x12,:lo12:ntt_z128_q
+    adrp    x11, ntt_z128_m 
+    add x11,x11,:lo12:ntt_z128_m
+    adrp    x12, ntt_z128_q 
+    add x12,x12,:lo12:ntt_z128_q
     ld1rh   {z28.h}, p0/z, [x11]
     ld1rh   {z29.h}, p0/z, [x12]
     mov     x1, x0
