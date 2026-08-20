@@ -191,7 +191,13 @@
     .type ntt_kyber_sve2_v128, %function
     .align 4
 ntt_kyber_sve2_v128:
-    ptrue   p0.h 
+    // Save callee-saved registers d8-d15
+    stp     d8,  d9,  [sp, #-64]!
+    stp     d10, d11, [sp, #16]
+    stp     d12, d13, [sp, #32]
+    stp     d14, d15, [sp, #48]
+
+    ptrue   p0.h
     mov     w9, #Q
     dup     z30.h, w9
 
@@ -235,7 +241,13 @@ ntt_kyber_sve2_v128:
     HALF
     // ---- half 1 ----
     addvl   x1, x0, #16
-    HALF
+        HALF
+
+    // Restore callee-saved registers d8-d15
+    ldp     d10, d11, [sp, #16]
+    ldp     d12, d13, [sp, #32]
+    ldp     d14, d15, [sp, #48]
+    ldp     d8,  d9,  [sp], #64
 
     ret
     .size ntt_kyber_sve2_v128, .-ntt_kyber_sve2_v128
